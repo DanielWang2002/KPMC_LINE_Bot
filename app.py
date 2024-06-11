@@ -22,7 +22,7 @@ from linebot.v3.messaging.models.message_action import MessageAction
 import pandas as pd
 import requests
 
-import flex_message
+import utils.flex_message as flex_message
 from utils.google import GoogleMaps
 from utils.youbike import YouBike
 
@@ -72,8 +72,6 @@ class LineBotApp:
                 # response = self.get_nearby_youbike()
                 response = "請分享您的位置資訊，以便我們為您找到附近的YouBike！"
                 self.send_reply(type="text", reply_token=event.reply_token, message=response)
-            else:
-                self.send_reply(type="text", reply_token=event.reply_token, message="哩洗咧公殺毀")
 
         # 處理使用者傳送的位置訊息
         @self.handler.add(MessageEvent, message=LocationMessageContent)
@@ -93,7 +91,18 @@ class LineBotApp:
             gm_flex_carousel = FlexCarousel(contents=gm_message)
             gm_flex_message = FlexMessage(alt_text="Google Maps", contents=gm_flex_carousel)
 
-            self.send_reply(type="flex", reply_token=event.reply_token, message=[gm_flex_message])
+            # Youbike 位置訊息
+            yb_flex = flex_message.load_json("flex_messages/Youbike.json")
+            yb_flex_bubble = FlexBubble.from_dict(yb_flex)
+            yb_message = self.get_yb_message(yb_response, yb_flex_bubble)
+            yb_flex_carousel = FlexCarousel(contents=yb_message)
+            yb_flex_message = FlexMessage(alt_text="YouBike", contents=yb_flex_carousel)
+
+            self.send_reply(
+                type="flex",
+                reply_token=event.reply_token,
+                message=[gm_flex_message, yb_flex_message],
+            )
 
     def send_reply(self, type, reply_token, message):
         """
@@ -157,7 +166,7 @@ class LineBotApp:
             bubble.hero.url = (
                 restaurant["photo"]
                 if restaurant["photo"]
-                else "https://play-lh.googleusercontent.com/LECOTVlGWVclV1VU3-1YcNoQdF2f37jQaQhX353GkySuwK9EcPXgy92YgKB3QeNvZMXe"
+                else "https://storage.googleapis.com/danielwang.xyz/image/NoneRestaurant.png"
             )
             bubble.hero.action.uri = restaurant["link"]
 
@@ -171,7 +180,7 @@ class LineBotApp:
             bubble.body.contents[1].contents[5].text = str(restaurant["rating"])
             # 距離
             bubble.body.contents[2].contents[0].contents[1].text = f"{restaurant['distance']} 公里"
-            # 今日營業時間
+            # 今日營業時間，根據星期幾取得對應的營業時間
             today = datetime.datetime.today().weekday()
             bubble.body.contents[2].contents[1].contents[1].text = (
                 restaurant["opening_time"][today]
@@ -182,6 +191,46 @@ class LineBotApp:
             # 下方按鈕
             bubble.footer.contents[0].action.label = "打開 Google Maps"
             bubble.footer.contents[0].action.uri = restaurant["link"]
+
+            bubbles.append(bubble)
+
+        return bubbles
+
+    def get_yb_message(self, response: pd.DataFrame, flex_bubble: FlexBubble):
+        """
+        依據 YouBike 回傳的資料，建立 Flex Message
+
+        :param response: pd.DataFrame, YouBike 回傳的資料
+        :param flex_bubble: FlexBubble, Flex Message 的 Bubble, 作為模板使用
+        """
+
+        bubbles = []
+        for i, station in response.iterrows():
+            bubble = flex_bubble.copy(deep=True)
+
+            # 中間部分
+            # 站點名稱
+            bubble.body.contents[1].text = station["name_tw"]
+            # 站點地址
+            bubble.body.contents[2].text = station["address_tw"]
+            # 車位總數量
+            bubble.body.contents[4].contents[0].contents[1].text = str(
+                station["available_spaces"] + station["empty_spaces"]
+            )
+            # 可借車輛數
+            bubble.body.contents[4].contents[1].contents[1].text = str(station["available_spaces"])
+            # 空位數
+            bubble.body.contents[4].contents[2].contents[1].text = str(station["empty_spaces"])
+            # 距離
+            bubble.body.contents[4].contents[4].contents[1].text = f"{station['distance']} 公里"
+            # 資料更新時間
+            bubble.body.contents[4].contents[5].contents[1].text = str(station["time"])
+
+            # 下方按鈕
+            # 根據經緯度打開 Google Maps
+            bubble.body.contents[6].action.uri = (
+                f"https://www.google.com/maps?q={station['lat']},{station['lng']}"
+            )
 
             bubbles.append(bubble)
 

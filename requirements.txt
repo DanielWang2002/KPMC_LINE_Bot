@@ -1,0 +1,6 @@
+Flask==3.0.3
+line_bot_sdk==3.11.0
+orjson==3.10.4
+pandas==2.2.2
+python-dotenv==1.0.1
+Requests==2.32.3

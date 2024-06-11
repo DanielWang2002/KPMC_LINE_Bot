@@ -1,0 +1,170 @@
+{
+    "type": "bubble",
+    "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+            {
+                "type": "text",
+                "text": "YouBike",
+                "weight": "bold",
+                "color": "#1DB446",
+                "size": "sm",
+                "style": "normal",
+                "decoration": "none"
+            },
+            {
+                "type": "text",
+                "text": "站點",
+                "weight": "bold",
+                "size": "xxl",
+                "margin": "md"
+            },
+            {
+                "type": "text",
+                "text": "地址",
+                "size": "xs",
+                "color": "#aaaaaa",
+                "wrap": true
+            },
+            {
+                "type": "separator",
+                "margin": "xxl"
+            },
+            {
+                "type": "box",
+                "layout": "vertical",
+                "margin": "xxl",
+                "spacing": "sm",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "總數量",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 0
+                            },
+                            {
+                                "type": "text",
+                                "text": "10",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "可借數量",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 0
+                            },
+                            {
+                                "type": "text",
+                                "text": "6",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "可停數量",
+                                "size": "sm",
+                                "color": "#555555",
+                                "flex": 4
+                            },
+                            {
+                                "type": "text",
+                                "text": "4",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "separator",
+                        "margin": "xxl"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "xxl",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "距離",
+                                "size": "sm",
+                                "color": "#555555"
+                            },
+                            {
+                                "type": "text",
+                                "text": "123",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "box",
+                        "layout": "horizontal",
+                        "margin": "xxl",
+                        "contents": [
+                            {
+                                "type": "text",
+                                "text": "資料更新時間",
+                                "size": "sm",
+                                "color": "#555555"
+                            },
+                            {
+                                "type": "text",
+                                "text": "10:00",
+                                "size": "sm",
+                                "color": "#111111",
+                                "align": "end"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "type": "separator",
+                "margin": "xxl"
+            },
+            {
+                "type": "button",
+                "style": "primary",
+                "height": "sm",
+                "action": {
+                    "type": "uri",
+                    "label": "打開 Google Maps",
+                    "uri": "https://www.google.com/maps?q=111,111"
+                },
+                "margin": "xs",
+                "color": "#FFA500",
+                "position": "relative"
+            }
+        ]
+    },
+    "styles": {
+        "footer": {
+            "separator": true
+        }
+    }
+}

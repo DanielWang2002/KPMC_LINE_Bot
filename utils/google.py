@@ -72,4 +72,9 @@ class GoogleMaps:
                 **details,
             }
 
-        return dict(sorted(restaurants.items(), key=lambda x: x[1]['distance'])[:top_n])
+        # 先按照rating排序，再按照距離排序
+        return dict(
+            sorted(
+                restaurants.items(), key=lambda x: (x[1]['rating'], x[1]['distance']), reverse=True
+            )[:top_n]
+        )

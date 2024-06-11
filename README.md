@@ -15,9 +15,9 @@
 
 3 directories, 8 files
 ```
-## 使用方式
+## 安裝及使用方式
 ### 建立LINE Bot
-至`https://developers.line.biz`建立LINE Bot
+至`https://developers.line.biz`建立LINE Bot  
 網路上已有許多教學資源，故不在此處提供詳細步驟
 ### Clone本專案
 ```bash
@@ -44,3 +44,5 @@ ngrok http 8000
 將Webhook URL改成ngrok提供的網址加上`/callback`
 ![Webhook URL](./pic/webhook_url.png)
 點擊Verify若出現Success即代表Bot已部署成功
+## LINE Bot使用方式
+- 傳送當前位置給LINE Bot，即可取得附近餐廳及單車站點的Flex Message
